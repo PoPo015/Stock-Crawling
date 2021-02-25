@@ -1,6 +1,6 @@
 from selenium import webdriver
 import datetime,time
-import json
+import json,requests,os
 
 now = datetime.datetime.now() #시간
 nowDate = now.strftime('%Y년 %m월 %d일 %H시 %M분 입니다.')
@@ -86,7 +86,14 @@ def setting_vi():
     print("json 저장중")
     with open('vi_data.json', 'w', encoding="utf-8") as f: # json 파일 저장 현재경로에
         json.dump(convertJson_dic, f, ensure_ascii=False, indent="\t")
-        print("test")
+    with open('vi_data.json', 'r', encoding='utf-8') as json_result: #json 파일 load
+        json_data = json.load(json_result)
+    send_json = json.dumps(json_data, indent='\t')
+    url='https://webhook.site/b760bb09-471e-45d6-8a37-d2e106eb3bfc'
+    requests.post(url=url, data= send_json)
+
+
+
 
 show_VI()
 inner_scroll()
