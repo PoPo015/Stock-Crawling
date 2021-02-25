@@ -86,6 +86,7 @@ def setting_vi():
     print("json 저장중")
     with open('vi_data.json', 'w', encoding="utf-8") as f: # json 파일 저장 현재경로에
         json.dump(convertJson_dic, f, ensure_ascii=False, indent="\t")
+    print("modifiy test")
 
 
 
