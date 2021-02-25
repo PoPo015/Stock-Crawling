@@ -1,0 +1,21 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stock.mapper.StockMapper">
+	
+	<select id="getJson" resultType="int">
+ 	select count(*) from stock_vi where stk_id = #{stk_id}
+<!-- 	select count(*) from stock_vi where stk_id = #{stk_id} and stk_rel = #{stk_rel} -->
+	</select>
+	
+	<update id="jsonUpdate">
+	update stock_vi set stk_rel = #{stk_rel} where stk_id = #{stk_id}
+	</update>
+	
+	<!-- json 데이터 넣기 -->
+	<insert id="register">
+	INSERT INTO stock_vi (stk_id, stk_cd, stk_nm, stk_pri, stk_inc, stk_act, stk_rel)
+	VALUES (#{stk_id}, #{stk_cd}, #{stk_nm}, #{stk_pri}, #{stk_inc},#{stk_act}, #{stk_rel})
+	</insert>
+
+</mapper>
