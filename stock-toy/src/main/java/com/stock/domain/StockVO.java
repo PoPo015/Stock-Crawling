@@ -8,6 +8,7 @@ import lombok.Data;
 public class StockVO {
 	
 	private String stk_id;
+	private int Istk_id; //int형으로 변환 
 	private String stk_cd;
 	private String stk_nm;
 	private String stk_pri;

@@ -1,6 +1,8 @@
 package com.stock.service;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,7 @@ public class StockServiceImpl implements StockService {
 	
 	@Override
 	public int register(StockVO vo) {
-	
+
 		log.info("service ------"+vo);
 		
 		return mapper.register(vo);
@@ -38,6 +40,13 @@ public class StockServiceImpl implements StockService {
 	public void jsonUpdate(StockVO vo) {
 
 		mapper.jsonUpdate(vo);
+	}
+
+	@Override
+	public List<StockVO> getList() {
+
+		return mapper.getList();
+	
 	}
 
 }

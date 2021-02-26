@@ -1,6 +1,7 @@
 package com.stock.project;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,6 @@ public class StockJsonController {
 	@PostMapping(value = "/new" ,consumes = "application/json")
 	public void createList(@RequestBody StockVO vo){
 		
-		
 		//StockVO 객체에 쌓인 데이터 Arraylist에 담기
 		ArrayList<StockVO> jsonList = new ArrayList<StockVO>(vo.getListDate());
 
@@ -46,6 +46,12 @@ public class StockJsonController {
 			
 			//vo2객체의 rel 데이터 비교를 위해 String 변수에 담아둠
 			String rel	= vo2.getStk_rel();
+			
+			//stk_id int형변환
+			int stk_id = Integer.parseInt(vo2.getStk_id());
+			log.info("stk_id 값------" +stk_id);
+			vo2.setIstk_id(stk_id);
+			
 			
 			log.info("rel 값-------"+rel);
 			// json으로 된 데이터중 중복된 데이터가 있는지 확인, 있다면 1반환 없다면 0 반환

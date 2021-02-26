@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="include.jsp"%>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,65 +9,56 @@
 <title>Insert title here</title>
 </head>
 <body>
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
-<h2>컨트롤러테스트~</h2>
+<h3>컨트롤러테스트~</h3>
 
-<button id="test" onclick="ajaxcli2()">클릭</button>
+<!-- <button id="test" onclick="ajaxcli2()">클릭</button> -->
+
+
+<div id="listTable">
+<!-- 	<input type="checkbox" id="check" onclick="reload();" checked="checked"> 10초마다 새로고침 -->
+<div class="table-responsive" style="margin:100px">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">번호</th>
+        <th scope="col">종목코드</th>
+        <th scope="col">종목명</th>
+        <th scope="col">발동가격</th>
+        <th scope="col">괴리율</th>
+        <th scope="col">발동시간</th>
+        <th scope="col">해제시각</th>
+      </tr>
+    </thead>
+    <tbody>
+    <c:forEach var="list" items="${list}">
+      <tr>
+        <td>${list.stk_id}</td>
+        <td>${list.stk_cd}</td>
+		<td>${list.stk_nm}</td>
+		<td>${list.stk_pri}</td>
+		<td>${list.stk_inc}</td>
+		<td>${list.stk_act}</td>
+		<td>${list.stk_rel}</td>								
+      </tr>
+      </c:forEach>
+      
+    </tbody>
+  </table>
+</div>
+</div>
+
+<br>
 
 
 </body>
 
-
-
 <script>
-
-/*  	$("#test").click(function ajaxcli(){
+$( document ).ready(function() {
+	setTimeout('location.reload()',150000); 
+});
 	
-	
-	$.ajax({
-			url: "/stock/new", // 클라이언트가 요청을 보낼 서버의 URL 주소
-		    data: date22,                // HTTP 요청과 함께 서버로 보낼 데이터
-		    type: "post",                             // HTTP 요청 방식(GET, POST)
-		    contentType: "application/json; charset=UTF-8",
-		    success: function(data){
-
-		    	alert("성공");
-		    },
-		    error: function (request, status, error){
-
-		    	alert("실패");		   
-		    }
-
-	});
-	
-	alert("클릭");
-	
-});  */
-	var listDate = 
-	{"listDate":
-		 [ 
-		   {"stk_id":1,
-		    "stk_cd":100,
-		    "stk_nm": "세운메디칼",
-		    "stk_pri": 8910,
-		    "stk_inc":100,
-		    "stk_act":"09:00:01",
-		    "stk_rel":"09:02:01"
-		   }
-		 ,  
-		   {"stk_id":2,
-		    "stk_cd":100,
-		    "stk_nm": "포포",
-		    "stk_pri": 999999,
-		    "stk_inc":102,
-		    "stk_act":"11:00:01",
-		    "stk_rel":"11:02:01"
-		   }
-		 ]
-		}
-	
-function ajaxcli2(){
+/* function ajaxcli2(){
 
 	$.ajax({
 	          url:'/stock/new',
@@ -82,10 +75,9 @@ function ajaxcli2(){
 
 	});
 }
-	
+ */
 
-
-
+ 
 </script>
 
 
