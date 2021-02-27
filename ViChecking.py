@@ -8,16 +8,20 @@ while True:
     print(nowDate)
 
     chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--headless') #백그라운드화
-    chrome_options.add_argument('window-size=1920x1080') #윈도우 사이즈 크기 조절
-    driver = webdriver.Chrome(chrome_options=chrome_options) #웹은 크롬&옵션사용
+    chrome_options.add_argument('--headless')  # 백그라운드화
+    chrome_options.add_argument('window-size=1920x1080')  # 윈도우 사이즈 크기 조절
+    driver = webdriver.Chrome(chrome_options=chrome_options)  # 웹은 크롬&옵션사용
     driver.maximize_window()
-    driver.get('http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC02021501') #크롤링할 url
-    time.sleep(1)
-    full = driver.find_element_by_xpath('//*[@id="jsViewSizeButton"]').click() #전체화면 vi해제시각 까지 불러오려고
-    driver.find_element_by_xpath('//*[@id="jsMdiContent"]/div/div[1]/div[1]/div[1]/div[1]/div/div/table/thead/tr[1]/td[9]/div/div/a').click() #sort 버튼 클릭
-    driver.find_element_by_xpath('//*[@id="jsMdiContent"]/div/div[1]/div[1]/div[1]/div[1]/div/div/table/thead/tr[1]/td[9]/div/div/a').click() #sort 버튼 클릭
-    vi_result = [] #결과값 담을 배열
+    driver.get('http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC02021501')  # 크롤링할 url
+    try:
+        driver.implicitly_wait(5) #페이지 로딩되기 까지 기다림 최대 5초
+    except:
+        print("time out")
+        driver.quit()
+    full = driver.find_element_by_xpath('//*[@id="jsViewSizeButton"]').click()  # 전체화면 vi해제시각 까지 불러오려고
+    driver.find_element_by_xpath('//*[@id="jsMdiContent"]/div/div[1]/div[1]/div[1]/div[1]/div/div/table/thead/tr[1]/td[9]/div/div/a').click()  # sort 버튼 클릭
+    driver.find_element_by_xpath('//*[@id="jsMdiContent"]/div/div[1]/div[1]/div[1]/div[1]/div/div/table/thead/tr[1]/td[9]/div/div/a').click()  # sort 버튼 클릭
+    vi_result = []  # 결과값 담을 배열
 
     def inner_scroll():
         scroll_bar = driver.find_element_by_class_name('CI-FREEZE-SCROLLER-INNER')
@@ -68,6 +72,12 @@ while True:
                 if stock_info_array[4+count] != "KOSDAQ":
                     stk_nm = stock_info_array[3 + count]+" "+stock_info_array[4+count]
                     del stock_info_array[4+count]
+                    if stock_info_array[4 + count] != "KOSPI":  # 띄어쓰기되어 있는 종목 이름 붙이기
+                        if stock_info_array[4 + count] != "KOSDAQ":
+                            stk_nm = stk_nm+" "+ stock_info_array[4 + count]
+                            del stock_info_array[4 + count]
+
+
             stk_pri = stock_info_array[6 + count] #가격
             stk_inc = stock_info_array[7 + count] #상승률
             stk_act = stock_info_array[9 + count] #발동시각
@@ -106,5 +116,5 @@ while True:
     print(vi_result)
 
     driver.quit()
-    time.sleep(20) # 숫자 = sec 만 수정해주세욤
+    time.sleep(25) # 숫자 = sec 만 수정해주세욤
     print("드라이버 종료")
