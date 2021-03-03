@@ -9,16 +9,14 @@ while True:
 
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')  # 백그라운드화
+    chrome_options.add_argument('--no-sandbox') # Bypass OS security model
     chrome_options.add_argument('window-size=1920x1080')  # 윈도우 사이즈 크기 조절
     driver = webdriver.Chrome(chrome_options=chrome_options)  # 웹은 크롬&옵션사용
     driver.maximize_window()
     driver.get('http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC02021501')  # 크롤링할 url
-    try:
-        driver.implicitly_wait(5) #페이지 로딩되기 까지 기다림 최대 5초
-    except:
-        print("time out")
-        driver.quit()
+    time.sleep(1.5)
     full = driver.find_element_by_xpath('//*[@id="jsViewSizeButton"]').click()  # 전체화면 vi해제시각 까지 불러오려고
+    time.sleep(1.5)
     driver.find_element_by_xpath('//*[@id="jsMdiContent"]/div/div[1]/div[1]/div[1]/div[1]/div/div/table/thead/tr[1]/td[9]/div/div/a').click()  # sort 버튼 클릭
     driver.find_element_by_xpath('//*[@id="jsMdiContent"]/div/div[1]/div[1]/div[1]/div[1]/div/div/table/thead/tr[1]/td[9]/div/div/a').click()  # sort 버튼 클릭
     vi_result = []  # 결과값 담을 배열
@@ -100,7 +98,7 @@ while True:
         with open('vi_data.json', 'r', encoding='utf-8') as json_result: #json 파일 load
             json_data = json.load(json_result)
         send_json = json.dumps(json_data, indent='\t')
-        url='http://localhost:9090/stock/new'
+        url='http://localhost:8081/stock/new'
         headers = {'Content-Type':'application/json; charset=utf-8'}
         requests.post(url=url, data= send_json , headers=headers)
         #response = requests.post(url=url, json=send_json)
