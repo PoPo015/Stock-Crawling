@@ -31,34 +31,52 @@ public class StockJsonController {
 		
 		//StockVO 객체에 쌓인 데이터 Arraylist에 담기
 		ArrayList<StockVO> jsonList = new ArrayList<StockVO>(vo.getListDate());
-
-//		ArrayList<StockVO> list = new ArrayList<StockVO>();
 		
 		// 데이터 확인을 위해 객체 생성
 		StockVO vo2 = new StockVO();
 		
 		//ArrayList에 들어온 인덱스 크기만큼 반복문 돔
 		for(int i=0; i<jsonList.size(); i++) {
+			
 			log.info(jsonList.get(i));
 			
 			// jsonList데이터 인덱스 i번째 데이터를 vo2에 담음.
 			vo2 = jsonList.get(i);
 			
-			//vo2객체의 rel 데이터 비교를 위해 String 변수에 담아둠
-			String rel	= vo2.getStk_rel();
-			
 			//stk_id int형변환
 			int stk_id = Integer.parseInt(vo2.getStk_id());
-			log.info("stk_id 값------" +stk_id);
+			log.info("int로 변환한 stk_id 값------" +stk_id);
 			vo2.setIstk_id(stk_id);
 			
 			
+			// json으로 된 데이터중 중복된 데이터가 있는지 확인, 있다면 1반환 없다면 0 반환 
+			int jsonCount = service.getJson(vo2);
+			int jsonCountRel = service.getJson2(vo2);
+			
+			//데이터가 0이라면 없음  - 등록
+			if(jsonCount == 0) {
+				log.info("데이터가 없습니다 등록합니다");
+				service.register(vo2);
+			}
+			
+			//데이터가 0이 아니라면 있음 (2중if문으로  데이터의 해제시각까지 조회) 
+			if(jsonCount != 0) {
+				log.info("j가 0이 아니네요 해제시각을 비교해봅니다");
+				
+				if(jsonCountRel == 1) {
+					log.info("데이터는 등록 되있으나, 시간이 그대로니 아무것도안합니다");
+				}else if(jsonCountRel == 0) {
+					log.info("해제 시각만 업데이트합니다");
+					service.jsonUpdate(vo2);
+				}
+			
+			}
+			
+			
+		/*	vo2객체의 rel 데이터 비교를 위해 String 변수에 담아둠
+			String rel	= vo2.getStk_rel();
 			log.info("rel 값-------"+rel);
-			// json으로 된 데이터중 중복된 데이터가 있는지 확인, 있다면 1반환 없다면 0 반환
-			int j = service.getJson(vo2);
-			
-			log.info("j의값--------"+j);
-			
+
 			// j가 0 (Pk비교)라면 등록, 0이 아니라면 다시 2중반복문으로 , rel 변수에 담겨 있는 데이터가 00:00:00이라면, 업데이트X, 00:00:00이 아니면 업데이트  
 			if(j == 0) {
 				System.out.println("데이터가 없습니다. 등록합니다");
@@ -72,8 +90,7 @@ public class StockJsonController {
 					}
 				System.out.println("전체 조건문 끝남");
 			}
-			
-			
+		*/	
 		}
 	  }
 }

@@ -37,6 +37,12 @@ public class StockServiceImpl implements StockService {
 	}
 
 	@Override
+	public int getJson2(StockVO vo) {
+		
+		return mapper.getJson2(vo);
+	}
+
+	@Override
 	public void jsonUpdate(StockVO vo) {
 
 		mapper.jsonUpdate(vo);
@@ -48,5 +54,6 @@ public class StockServiceImpl implements StockService {
 		return mapper.getList();
 	
 	}
+
 
 }

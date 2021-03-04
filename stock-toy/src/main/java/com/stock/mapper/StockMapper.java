@@ -10,6 +10,8 @@ public interface StockMapper {
 	
 	public int getJson(StockVO vo);
 	
+	public int getJson2(StockVO vo);
+	
 	public void jsonUpdate(StockVO vo);
 	
 	// db데이터 출력
