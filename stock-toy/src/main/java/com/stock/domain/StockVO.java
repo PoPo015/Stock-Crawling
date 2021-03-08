@@ -16,6 +16,7 @@ public class StockVO {
 	private String stk_act;
 	private String stk_rel;
 	
-
 	List<StockVO> listDate; // json 데이터 배열 담기
+
+	
 }

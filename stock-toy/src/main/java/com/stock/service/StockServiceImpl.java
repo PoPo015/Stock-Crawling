@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.stock.domain.StockNewsVO;
 import com.stock.domain.StockVO;
 import com.stock.mapper.StockMapper;
 
@@ -21,11 +22,17 @@ public class StockServiceImpl implements StockService {
 	
 	
 	@Override
-	public int register(StockVO vo) {
+	public int ViListRegister(StockVO vo) {
 
 		log.info("service ------"+vo);
 		
-		return mapper.register(vo);
+		return mapper.ViListRegister(vo);
+	}
+
+	@Override
+	public int ViNewsRegister(StockNewsVO vo) {
+
+		return mapper.ViNewsRegister(vo);
 	}
 
 	//json 중복됬는지 조회
@@ -54,6 +61,22 @@ public class StockServiceImpl implements StockService {
 		return mapper.getList();
 	
 	}
+
+	@Override
+	public int getJsonNews(StockNewsVO vo) {
+		
+		return mapper.getJsonNews(vo);
+	
+	}
+
+	@Override
+	public List<StockNewsVO> getNewsList(String test1) {
+		
+		return mapper.getNewsList(test1);
+	
+	}
+
+
 
 
 }

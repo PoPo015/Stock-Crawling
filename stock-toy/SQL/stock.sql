@@ -1,5 +1,5 @@
 CREATE TABLE stock_vi(
-stk_id NUMBER, --번호
+stk_id NUMBER(10,0), --번호
 stk_cd varchar2(50), --종목코드 
 stk_nm varchar2(50),  --종목명
 stk_pri varchar2(50), --가격
@@ -10,10 +10,10 @@ stk_daye Date default sysdate -- 데이터등록시간
 -- CONSTRAINT pk_stkid PRIMARY KEY(stk_id)
 );
 --alter table stock_vi add stk_daye Date default sysdate
-alter table stock_vi drop primary key
-commit
-drop table stock_vi
-commit;
+
+--alter table stock_vi drop primary key
+--drop table stock_news
+--commit;
 --ALTER TABLE stock_vi MODIFY stk_rel VARCHAR2(50);
 --ALTER TABLE stock_vi MODIFY stk_act VARCHAR2(50);
 --ALTER TABLE stock_vi DROP CONSTRAINT pk_stkid;
@@ -52,7 +52,7 @@ VALUES (SEQ_STOCK.nextval,1111,'종목명',8000,100);
 COMMIT
 
 
-------- list 작업 -----
+------- VI list 작업 -----
 --select * from stock_vi order by TO_NUMBER(stk_id)
 
 select * from stock_vi order by stk_id
@@ -66,3 +66,34 @@ select * from stock_vi where to_date(stk_daye,'YY/MM/DD') =(SELECT TO_CHAR(SYSDA
 select count(*) from stock_vi where stk_id = #{stk_id}
 
     update stock_vi set stk_rel = '24:24:24' where stk_id = 5 and stk_nm = '서울식품2'
+
+------vi news-------------    
+CREATE TABLE stock_news(
+--news_bno NUMBER(10,0),
+news_company varchar2(100),
+news_title varchar2(300),
+news_time varchar2(100),
+news_href varchar2(300)
+)
+
+drop table stock_news 
+
+create sequence seq_news increment by 1 start with 1
+
+insert into stock_news (news_bno, news_company, news_title, news_time, news_href)
+values (seq_news.nextval,'테스트회사','제목', '7일전','www.naver.com')
+
+select * from stock_news where news_company LIKE '%THESAMSUNG%'
+
+-- 띄어쓰기 구분없이 검색하기
+select * from stock_news where replace(news_company,' ','') LIKE '%THESAMSUNG%'
+
+commit;
+
+select count(*) from stock_news where news_bno = 
+
+select count(*) from stock_news where news_company ='THE MIDONG' and news_href = 'http://www.edaily.co.kr/news/newspath.asp?newsid=04145926628979384' 
+
+select vsize('가나다') as byteSize from dual
+
+commit;
