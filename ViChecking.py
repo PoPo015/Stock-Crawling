@@ -3,6 +3,8 @@ import datetime,time
 import json,requests,threading
 
 while True:
+    start = time.time()
+    test_time = []
     now = datetime.datetime.now() #시간
     nowDate = now.strftime('%Y년 %m월 %d일 %H시 %M분 입니다.')
     print(nowDate)
@@ -10,13 +12,14 @@ while True:
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')  # 백그라운드화
     chrome_options.add_argument('--no-sandbox') # Bypass OS security model
+    chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('window-size=1920x1080')  # 윈도우 사이즈 크기 조절
     driver = webdriver.Chrome(chrome_options=chrome_options)  # 웹은 크롬&옵션사용
     driver.maximize_window()
     driver.get('http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC02021501')  # 크롤링할 url
     time.sleep(1.5)
     full = driver.find_element_by_xpath('//*[@id="jsViewSizeButton"]').click()  # 전체화면 vi해제시각 까지 불러오려고
-    time.sleep(1.5)
+    time.sleep(2)
     driver.find_element_by_xpath('//*[@id="jsMdiContent"]/div/div[1]/div[1]/div[1]/div[1]/div/div/table/thead/tr[1]/td[9]/div/div/a').click()  # sort 버튼 클릭
     driver.find_element_by_xpath('//*[@id="jsMdiContent"]/div/div[1]/div[1]/div[1]/div[1]/div/div/table/thead/tr[1]/td[9]/div/div/a').click()  # sort 버튼 클릭
     vi_result = []  # 결과값 담을 배열
@@ -98,7 +101,7 @@ while True:
         with open('vi_data.json', 'r', encoding='utf-8') as json_result: #json 파일 load
             json_data = json.load(json_result)
         send_json = json.dumps(json_data, indent='\t')
-        url='http://localhost:8081/stock/new'
+        url='http://localhost:8081/stock/viListReg'
         headers = {'Content-Type':'application/json; charset=utf-8'}
         requests.post(url=url, data= send_json , headers=headers)
         #response = requests.post(url=url, json=send_json)
@@ -113,6 +116,9 @@ while True:
 
     print(vi_result)
 
+    driver.close()
     driver.quit()
-    time.sleep(25) # 숫자 = sec 만 수정해주세욤
+    print("time :", time.time() - start)
+    test_time.append(time.time()-start)
+    time.sleep(5) # 숫자 = sec 만 수정해주세욤
     print("드라이버 종료")
