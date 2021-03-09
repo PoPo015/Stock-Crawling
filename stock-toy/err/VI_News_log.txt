@@ -1,0 +1,36 @@
+-----------------------------------
+예외발생시간 : Tue Mar 09 12:47:27 KST 2021
+예외메시지 : null
+-----------------------------------
+-----------------------------------
+예외발생시간 : Tue Mar 09 12:47:57 KST 2021
+예외메시지 : null
+-----------------------------------
+-----------------------------------
+예외발생시간 : Tue Mar 09 12:49:05 KST 2021
+예외메시지 : 
+### Error updating database.  Cause: java.sql.SQLException: ORA-12899: "STOCK"."STOCK_NEWS"."NEWS_COMPANY" 열에 대한 값이 너무 큼(실제: 176, 최대값: 100)
+
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: insert into stock_news(news_company, news_title, news_href, news_time)  values (?, ?, ?, ?)
+### Cause: java.sql.SQLException: ORA-12899: "STOCK"."STOCK_NEWS"."NEWS_COMPANY" 열에 대한 값이 너무 큼(실제: 176, 최대값: 100)
+
+; uncategorized SQLException; SQL state [72000]; error code [12899]; ORA-12899: "STOCK"."STOCK_NEWS"."NEWS_COMPANY" 열에 대한 값이 너무 큼(실제: 176, 최대값: 100)
+; nested exception is java.sql.SQLException: ORA-12899: "STOCK"."STOCK_NEWS"."NEWS_COMPANY" 열에 대한 값이 너무 큼(실제: 176, 최대값: 100)
+
+-----------------------------------
+-----------------------------------
+예외발생시간 : Tue Mar 09 12:49:10 KST 2021
+예외메시지 : 
+### Error updating database.  Cause: java.sql.SQLException: ORA-12899: "STOCK"."STOCK_NEWS"."NEWS_COMPANY" 열에 대한 값이 너무 큼(실제: 422, 최대값: 100)
+
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: insert into stock_news(news_company, news_title, news_href, news_time)  values (?, ?, ?, ?)
+### Cause: java.sql.SQLException: ORA-12899: "STOCK"."STOCK_NEWS"."NEWS_COMPANY" 열에 대한 값이 너무 큼(실제: 422, 최대값: 100)
+
+; uncategorized SQLException; SQL state [72000]; error code [12899]; ORA-12899: "STOCK"."STOCK_NEWS"."NEWS_COMPANY" 열에 대한 값이 너무 큼(실제: 422, 최대값: 100)
+; nested exception is java.sql.SQLException: ORA-12899: "STOCK"."STOCK_NEWS"."NEWS_COMPANY" 열에 대한 값이 너무 큼(실제: 422, 최대값: 100)
+
+-----------------------------------

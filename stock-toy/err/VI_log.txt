@@ -1,0 +1,14 @@
+-----------------------------------
+예외발생시간 : Tue Mar 09 12:43:05 KST 2021
+예외메시지 : 
+### Error updating database.  Cause: java.sql.SQLException: ORA-12899: "STOCK"."STOCK_VI"."STK_REL" 열에 대한 값이 너무 큼(실제: 135, 최대값: 50)
+
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: INSERT INTO stock_vi (stk_id, stk_cd, stk_nm, stk_pri, stk_inc, stk_act, stk_rel)  VALUES (?, ?, ?, ?, ?,?, ?)
+### Cause: java.sql.SQLException: ORA-12899: "STOCK"."STOCK_VI"."STK_REL" 열에 대한 값이 너무 큼(실제: 135, 최대값: 50)
+
+; uncategorized SQLException; SQL state [72000]; error code [12899]; ORA-12899: "STOCK"."STOCK_VI"."STK_REL" 열에 대한 값이 너무 큼(실제: 135, 최대값: 50)
+; nested exception is java.sql.SQLException: ORA-12899: "STOCK"."STOCK_VI"."STK_REL" 열에 대한 값이 너무 큼(실제: 135, 최대값: 50)
+
+-----------------------------------

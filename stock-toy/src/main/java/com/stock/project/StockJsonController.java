@@ -1,12 +1,12 @@
 package com.stock.project;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,12 +32,16 @@ public class StockJsonController {
 	@PostMapping(value = "/VI_ListReg" ,consumes = "application/json")
 	public void createList(@RequestBody StockVO vo){
 		
+		PrintStream ps = null;
+		FileOutputStream fos=null;
+
+
 		//StockVO 객체에 쌓인 데이터 Arraylist에 담기
 		ArrayList<StockVO> jsonList = new ArrayList<StockVO>(vo.getListDate());
 		
 		// 데이터 확인을 위해 객체 생성
 		StockVO vo2 = new StockVO();
-		
+
 		//ArrayList에 들어온 인덱스 크기만큼 반복문 돔
 		for(int i=0; i<jsonList.size(); i++) {
 			
@@ -58,6 +62,12 @@ public class StockJsonController {
 			int jsonCount = service.getJson(vo2);
 			int jsonCountRel = service.getJson2(vo2);
 			
+			try {
+				File file = new File("C:\\Users\\popo\\Desktop\\stock-toy\\stock-toy\\err\\VI_log.txt");
+				fos = new FileOutputStream(file,true); // VI_log파일에 출력 준비
+				ps=new PrintStream(fos); // err의 출력을 화면이 아닌, error.log파일로 변경
+				System.setErr(ps);
+		
 			//데이터가 0이라면 없음  - 등록
 			if(jsonCount == 0) {
 				log.info("데이터가 없습니다 등록합니다");
@@ -67,25 +77,38 @@ public class StockJsonController {
 			//데이터가 0이 아니라면 있음 (2중if문으로  데이터의 해제시각까지 조회) 
 			if(jsonCount != 0) {
 				log.info("j가 0이 아니네요 해제시각을 비교해봅니다");
-				
-				if(jsonCountRel == 1) {
-					log.info("데이터는 등록 되있으나, 시간이 그대로니 아무것도안합니다");
-				}else if(jsonCountRel == 0) {
-					log.info("해제 시각만 업데이트합니다");
-					service.jsonUpdate(vo2);
-				}
-			
-			}
 
-		} //for문 end
-	
-	} //create json end
-	
+					if(jsonCountRel == 1) {
+						log.info("데이터는 등록 되있으나, 시간이 그대로니 아무것도안합니다");
+					}else if(jsonCountRel == 0) {
+						log.info("해제 시각만 업데이트합니다");
+						service.jsonUpdate(vo2);
+					}
+				}
+			} //for문 end
+		catch (Exception e) {
+			System.out.println("예외발생 기록합니당");
+			System.err.println("-----------------------------------");
+			System.err.println("예외발생시간 : " + new Date());  // 현재시간출력
+			//e.printStackTrace(System.err);
+			System.err.println("예외메시지 : " + e.getMessage());
+			System.err.println("-----------------------------------");
+			}
+		} //create json end
+	}	
 	
 	//vi News 크롤링 데이터담기
 	@PostMapping(value = "/VI_NewsReg" ,consumes = "application/json")
 	public void createList2(@RequestBody StockNewsVO vo){
 
+		PrintStream ps = null;
+		FileOutputStream fos=null;
+		try {
+			File file = new File("C:\\Users\\popo\\Desktop\\stock-toy\\stock-toy\\err\\VI_News_log.txt");
+			fos = new FileOutputStream(file,true); // VI_News_log파일에 출력 준비
+			ps=new PrintStream(fos); // err의 출력을 화면이 아닌, error.log파일로 변경
+			System.setErr(ps);
+			
 		ArrayList<StockNewsVO> jsonList = new ArrayList<StockNewsVO>(vo.getNews_Data());
 
 		log.info(jsonList);
@@ -99,14 +122,21 @@ public class StockJsonController {
 			int jsonNewsCount = service.getJsonNews(vo2);
 			log.info("등록된 데이터 있나?" + jsonNewsCount);
 			
+			
 			if(jsonNewsCount == 0) {
 				log.info("뉴스크롤링 데이터가 없습니다 ,등록합니다");
 				service.ViNewsRegister(vo2);
 			}else{
 				log.info("데이터가 있네요 아무것도안합니다....");
-				}
 			}
+		} //end for
+	}catch (Exception e) {
+			System.out.println("예외발생 기록합니당");
+			System.err.println("-----------------------------------");
+			System.err.println("예외발생시간 : " + new Date());  // 현재시간출력
+			//e.printStackTrace(System.err);
+			System.err.println("예외메시지 : " + e.getMessage());
+			System.err.println("-----------------------------------");
 		}
-	
-
+	}	
 }

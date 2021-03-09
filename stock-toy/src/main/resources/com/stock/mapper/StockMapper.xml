@@ -20,7 +20,7 @@
 	
 	<!-- viNewsList 뽑기 -->
 	<select id="getNewsList" resultType="com.stock.domain.StockNewsVO" parameterType="string">
-	select * from stock_news where replace(news_company,' ','') LIKE #{test1}
+	select * from stock_news where replace(news_company,' ','') LIKE #{stk_nm}
 	</select>
 	
 	<!-- json 데이터업데이트 -->

@@ -83,8 +83,6 @@ create sequence seq_news increment by 1 start with 1
 insert into stock_news (news_bno, news_company, news_title, news_time, news_href)
 values (seq_news.nextval,'테스트회사','제목', '7일전','www.naver.com')
 
-select * from stock_news where news_company LIKE '%THESAMSUNG%'
-
 -- 띄어쓰기 구분없이 검색하기
 select * from stock_news where replace(news_company,' ','') LIKE '%THESAMSUNG%'
 
