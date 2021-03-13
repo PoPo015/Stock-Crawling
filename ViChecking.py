@@ -105,7 +105,7 @@ while True:
     nowDate = now.strftime('%Y년 %m월 %d일 %H시 %M분 입니다.')
     print(nowDate)
     chrome_options = webdriver.ChromeOptions()
-    # chrome_options.add_argument('--headless')  # 백그라운드화
+    chrome_options.add_argument('--headless')  # 백그라운드화
     chrome_options.add_argument('--no-sandbox') # Bypass OS security model
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument("--disable-setuid-sandbox")
