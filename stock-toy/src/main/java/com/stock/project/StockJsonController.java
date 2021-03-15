@@ -1,36 +1,51 @@
 package com.stock.project;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.stock.domain.StockNewsVO;
 import com.stock.domain.StockVO;
 import com.stock.service.StockService;
 
-import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
-@RestController
+@Controller
 @Log4j
 @RequestMapping("/stock")
-//@AllArgsConstructor
 public class StockJsonController {
 	
-	@Setter(onMethod_ = @Autowired)
+//	@Setter(onMethod_ = @Autowired)
+	@Autowired
 	private StockService service;
 
+	// list 페이지로 이동
+	@GetMapping(value = "/list")
+	public void GetList(Model model) {
+		
+		log.info("리스트출력");
+		
+	}
+	
 	//json 배열 db에 담기
 	@PostMapping(value = "/VI_ListReg" ,consumes = "application/json")
-	public void createList(@RequestBody StockVO vo){
+	public ResponseEntity<String> createList(@RequestBody StockVO vo){
 		
 		PrintStream ps = null;
 		FileOutputStream fos=null;
@@ -71,6 +86,10 @@ public class StockJsonController {
 			//데이터가 0이라면 없음  - 등록
 			if(jsonCount == 0) {
 				log.info("데이터가 없습니다 등록합니다");
+				//텔레그램 api 호출
+				System.out.println("텔레그램 호출");
+				telgram(vo2);
+				
 				service.ViListRegister(vo2);
 			}
 			
@@ -93,13 +112,19 @@ public class StockJsonController {
 			//e.printStackTrace(System.err);
 			System.err.println("예외메시지 : " + e.getMessage());
 			System.err.println("-----------------------------------");
+			//통신실패
+			return new ResponseEntity<String>("error",HttpStatus.NOT_FOUND);
 			}
+			
 		} //create json end
+
+		//성공 200코드 발환
+		return new ResponseEntity<String>("success", HttpStatus.OK);
 	}	
 	
 	//vi News 크롤링 데이터담기
 	@PostMapping(value = "/VI_NewsReg" ,consumes = "application/json")
-	public void createList2(@RequestBody StockNewsVO vo){
+	public ResponseEntity<String> createList2(@RequestBody StockNewsVO vo){
 
 		PrintStream ps = null;
 		FileOutputStream fos=null;
@@ -125,10 +150,18 @@ public class StockJsonController {
 			
 			if(jsonNewsCount == 0) {
 				log.info("뉴스크롤링 데이터가 없습니다 ,등록합니다");
+				
+//				log.info("뉴스 텔레그램 쏩니다");
+//				Newstelgram(vo2);
+				
 				service.ViNewsRegister(vo2);
-			}else{
-				log.info("데이터가 있네요 아무것도안합니다....");
 			}
+			
+			if(jsonNewsCount != 0) {
+				log.info("시간 업데이트합니다");
+				service.jsonNewsUpdate(vo2);
+			}
+			
 		} //end for
 	}catch (Exception e) {
 			System.out.println("예외발생 기록합니당");
@@ -137,6 +170,73 @@ public class StockJsonController {
 			//e.printStackTrace(System.err);
 			System.err.println("예외메시지 : " + e.getMessage());
 			System.err.println("-----------------------------------");
+			//통신실패
+			return new ResponseEntity<String>("error",HttpStatus.NOT_FOUND);
 		}
+		//성공 200코드 발환
+		return new ResponseEntity<String>("success", HttpStatus.OK);
 	}	
+	
+	//텔레그램 post
+	public static void telgram(StockVO vo) {
+		//개인토큰
+		String Token = "1562896344:AAHwPvDokCioksBsj8XaFrD3n08fGEGCy2U";
+		//채널토큰
+		String chanel = "-1001492869181";
+		//아이디
+		String chat_id = "581572532";
+		
+		BufferedReader in = null;
+		
+		try {
+			 URL obj = new URL("https://api.telegram.org/bot" + Token + "/sendmessage?chat_id=" + chat_id + "&text=번호:" + vo.getIstk_id() + "                                            종목코드:" + vo.getStk_cd() + "                                                   종목명:" + vo.getStk_nm() + "                                          발동가격:" + vo.getStk_pri() + "                                           상승률:" + vo.getStk_inc() + "                                         발동시각:" + vo.getStk_act());
+			 
+			 HttpURLConnection con = (HttpURLConnection)obj.openConnection();
+			 con.setRequestMethod("GET");
+			 in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+			 String line;
+			 
+			 while((line = in.readLine()) != null) { // response를 차례대로 출력
+				 System.out.println(line);
+			 }
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			 if(in != null) try { in.close(); } catch(Exception e) { e.printStackTrace(); }
+		}
+			 
+	}
+	
+	
+//	//텔레그램 post
+//		public static void Newstelgram(StockNewsVO vo) {
+//			//개인토큰
+//			String Token = "1562896344:AAHwPvDokCioksBsj8XaFrD3n08fGEGCy2U";
+//			//채널토큰
+//			String chanel = "-1001492869181";
+//			//아이디
+//			String chat_id = "581572532";
+//			
+//			BufferedReader in = null;
+//			
+//			try {
+//				 URL obj = new URL("https://api.telegram.org/bot" + Token + "/sendmessage?chat_id=" + chat_id + "&text=:"+ vo.getNews_title() +vo.getNews_href());   
+//				
+//	 			HttpURLConnection con = (HttpURLConnection)obj.openConnection();
+//				 con.setRequestMethod("GET");
+//				 in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+//				 String line;
+//				 
+//				 while((line = in.readLine()) != null) { // response를 차례대로 출력
+//					 System.out.println(line);
+//				 }
+//			}catch (Exception e) {
+//				e.printStackTrace();
+//			}finally {
+//				 if(in != null) try { in.close(); } catch(Exception e) { e.printStackTrace(); }
+//			}
+//				 
+//		}
+//	
+	
 }

@@ -21,6 +21,9 @@ public interface StockMapper {
 	//vi news데이터 있는지 여부  조회
 	public int getJsonNews(StockNewsVO vo);
 	
+	//VI NEWS 시간 업데이트
+	public void jsonNewsUpdate(StockNewsVO vo);
+	
 	//vi news list 데이터 조회
 	public List<StockNewsVO> getNewsList(String test1);
 	

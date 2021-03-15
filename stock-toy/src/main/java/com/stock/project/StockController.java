@@ -3,10 +3,8 @@ package com.stock.project;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,10 +14,9 @@ import com.stock.domain.StockNewsVO;
 import com.stock.domain.StockVO;
 import com.stock.service.StockService;
 
-import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
-@Controller
+@RestController
 @Log4j
 @RequestMapping("/stock")
 public class StockController {
@@ -29,12 +26,12 @@ public class StockController {
 	private StockService service;
 	
 	// list 페이지로 이동
-	@GetMapping(value = "/list")
-	public void GetList(Model model) {
-		
-		log.info("리스트출력");
-		
-	}
+//	@GetMapping(value = "/list")
+//	public void GetList(Model model) {
+//		
+//		log.info("리스트출력");
+//		
+//	}
 	
 	//ajax ViList 응답으로 보내기
 	@ResponseBody

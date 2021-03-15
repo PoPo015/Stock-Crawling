@@ -76,6 +76,12 @@ public class StockServiceImpl implements StockService {
 	
 	}
 
+	@Override
+	public void jsonNewsUpdate(StockNewsVO vo) {
+
+		 mapper.jsonNewsUpdate(vo);
+	}
+
 
 
 

@@ -17,6 +17,9 @@ public interface StockService {
 
 	public void jsonUpdate(StockVO vo);
 	
+	//VI NEWS 시간 업데이트
+	public void jsonNewsUpdate(StockNewsVO vo);
+	
 	public int getJsonNews(StockNewsVO vo);
 	
 	//vi news list 데이터 조회
