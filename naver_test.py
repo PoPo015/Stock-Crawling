@@ -13,7 +13,7 @@ logging.basicConfig(
 def news_search():
     try:
         headers = {'User-Agent': 'Mozilla/5.0 (Windows; U; MSIE 9.0; WIndows NT 9.0; ko-KR))',} #안티 크롤링
-        url = "https://search.naver.com/search.naver?where=news&sm=tab_jum&query="+keyword
+        url = "https://search.naver.com/search.naver?where=news&query="+keyword+"&sm=tab_opt&sort=0&photo=0&field=0&reporter_article=&pd=1&ds=&de=&docid=&nso=so%3Ar%2Cp%3A1w%2Ca%3Aall&mynews=0&refresh_start=0&related=0"
         req = requests.get(url.format(keyword))
         soup = BeautifulSoup(req.text, 'html.parser')
 
